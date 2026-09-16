@@ -20,3 +20,5 @@ cache/
 *.log
 logs/
 
+processed_data/
+
