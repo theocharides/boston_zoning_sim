@@ -41,6 +41,7 @@ if __package__ in {None, ""}:
 
 from preprocessing.utils import (
     clean_numeric,
+    normalize_condition,
     normalize_pid,
     require_existing_path,
     to_base_pid,
@@ -83,15 +84,10 @@ COLUMN_MAP = {
     "yr_remodel":       ("YR_REMOD", "YR_REMODEL"),
     "structure_class":  ("STRUCTURE_CLASS", "STRUCTURE_CLASS"),
     "overall_cond":     ("R_OVRALL_CND", "OVERALL_COND"),
-    "bed_rooms":        ("R_BDRMS", "BED_RMS"),
+    "bedrooms":         ("R_BDRMS", "BED_RMS"),
     "full_baths":       ("R_FULL_BTH", "FULL_BTH"),
     "half_baths":       ("R_HALF_BTH", "HLF_BTH"),
     "total_rooms":      ("R_TOTAL_RMS", "TT_RMS"),
-    "kitchens":         ("R_KITCH", "KITCHENS"),
-    "heat_type":        ("R_HEAT_TYP", "HEAT_TYPE"),
-    "ac_type":          ("R_AC", "AC_TYPE"),
-    "fireplaces":       ("R_FPLACE", "FIREPLACES"),
-    "res_units":        ("S_UNIT_RES", "RES_UNITS"),
     "com_units":        ("S_UNIT_COM", "COM_UNITS"),
     "num_floors":       ("NUM_FLOORS", "RES_FLOOR"),
     "num_parking":      ("U_NUM_PARK", "NUM_PARKING"),
@@ -128,6 +124,8 @@ def load_year(path: Path, fy: int) -> pd.DataFrame:
             out[unified] = pd.NA
 
     out["parcel_id"] = normalize_pid(out["parcel_id"])
+    # Normalize condition codes so the two schema generations share categories.
+    out["overall_cond"] = normalize_condition(out["overall_cond"])
     out["fy"] = fy
     return out
 
@@ -220,10 +218,8 @@ def main() -> None:
                 "gross_area", "land_sf", "gross_tax"]:
         panel[col] = clean_numeric(panel[col])
 
-    # Assessor files carry assessed values, not transaction prices; use the
-    # fiscal-year start (July 1) as the observation date for every row.
-    panel["obs_date"] = pd.to_datetime(dict(year=panel["fy"] - 1, month=7, day=1))
-
+    # Assessor files carry assessed values, not transaction dates; `fy` plus
+    # the year dummies fully capture time, so no separate obs_date is kept.
     panel = add_year_dummies(panel)
 
     OUT_PANEL.parent.mkdir(parents=True, exist_ok=True)
@@ -233,7 +229,7 @@ def main() -> None:
     print(f"  rows={len(panel):,}  parcels={panel['parcel_id'].nunique():,}  "
           f"years={sorted(panel['fy'].unique())}")
     print(panel[["parcel_id", "fy", "geo_pid", "centroid_x", "centroid_y",
-                 "assessed_total", "obs_date"]].head(10).to_string())
+                 "assessed_total"]].head(10).to_string())
 
 
 if __name__ == "__main__":
