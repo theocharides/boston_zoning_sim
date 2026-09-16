@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "boston-sim"
+name = "boston-zoning-sim"
 version = "0.1.0"
-description = "Parcel preparation, accessibility, and hedonic modeling workflows for Boston simulation."
+description = "Boston zoning simulator."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
