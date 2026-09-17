@@ -72,11 +72,9 @@ COLUMN_MAP = {
     "land_use_code":    ("LU", "LU"),
     "land_use_desc":    (None, "LU_DESC"),
     "bldg_type":        (None, "BLDG_TYPE"),
-    "owner_occ":        ("OWN_OCC", "OWN_OCC"),
     "assessed_land":    ("AV_LAND", "LAND_VALUE"),
     "assessed_bldg":    ("AV_BLDG", "BLDG_VALUE"),
     "assessed_total":   ("AV_TOTAL", "TOTAL_VALUE"),
-    "gross_tax":        ("GROSS_TAX", " GROSS_TAX "),
     "land_sf":          ("LAND_SF", "LAND_SF"),
     "gross_area":       ("GROSS_AREA", "GROSS_AREA"),
     "living_area":      ("LIVING_AREA", "LIVING_AREA"),
@@ -215,11 +213,9 @@ def main() -> None:
 
     # type cleaning
     for col in ["assessed_total", "assessed_land", "assessed_bldg", "living_area",
-                "gross_area", "land_sf", "gross_tax"]:
+                "gross_area", "land_sf"]:
         panel[col] = clean_numeric(panel[col])
 
-    # Assessor files carry assessed values, not transaction dates; `fy` plus
-    # the year dummies fully capture time, so no separate obs_date is kept.
     panel = add_year_dummies(panel)
 
     OUT_PANEL.parent.mkdir(parents=True, exist_ok=True)

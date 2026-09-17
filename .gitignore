@@ -20,7 +20,11 @@ cache/
 *.log
 logs/
 
+# large processed data files
 processed_data/
 
+# vscode files
 .vscode/
 
+# hedonic estimation outputs
+models/output/
