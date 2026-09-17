@@ -26,5 +26,9 @@ processed_data/
 # vscode files
 .vscode/
 
+# Python notebooks
+*.ipynb
+
 # hedonic estimation outputs
 models/output/
+
