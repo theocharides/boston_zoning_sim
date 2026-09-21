@@ -22,11 +22,11 @@ Run `python preprocessing/run_panel_prep.py` to build both model inputs (see `pr
 
 ### Semi-causal structural model, ML validation framework
 Traditional statistics and machine learning are used to harness both explanatory and predictive power.
-- A structural econometric model allows for observing the impact of zoning changes. Model coefficients are statistically valid to help explain predictions
-- Cross validation of results is done using spatially stratified spatial splits to ensure all neighborhoods are accounted for in training and testing data
+- A structural econometric model is used to test the impact of a zoning change on Boston development. Structural model coefficients help explain predictions.
+- Cross validation of results is done using sstratified spatial splits to ensure all neighborhoods are accounted for in training and testing data
 
 ### Demand (Revenue Calculation)
-- A standard **OLS hedonic model** is used to predict the value of different residential development types on a particular parcel. That spatio-temporal lag variable in the model predicts **price per square foot** to feed into developer revenue calculations. It uses property attributes alongside others to address statistical needs:
+- A standard **OLS hedonic model** is used to predict the value of different residential development types on a particular parcel. The model predicts **price per square foot** to feed into developer revenue calculations. It uses property attributes alongside others to address statistical needs:
     - **Spatio-temporal price lag** is included through a **temporal precedence** variable by calculating a running average of price per sqft within **300 m** of the parcel using only sales that occurred prior to the transaction date. This stops the simultaneous feedback loop so that only past sales influence current price.
     - **Accessibility and neighborhood variables** reduce omitted variable bias (reducing endogeneity) and mitigate the risk of spatial autocorrelation influencing price estimates.These variable handle spatial error.
     - **Yearly transaction dummies** remove temporal endogeneity by absorbing time-varying macroeconomic shocks.    - **Property attributes** describe the components of the property itself that influence its price.
