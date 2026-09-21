@@ -5,6 +5,10 @@ A parcel-level simulator to test how residential real estate prices and develope
 2. Calculate Revenues: Use the Hedonic Model to calculate expected market value of different building typologies at the parcel level
 3. Predict Developer Choices: Use simulated revenue and zoning variables in the Developer Choice Model to predict the probability shift in development choices
 
+###
+The simulator predict real estate prices for each Boston typology that could be built on a parcel. Those prices are used to predict the developer decisions. The residential typologies for the developer choice are:
+![](boston_typologies.png)
+
 ## Running a Simulation
 
 ### Run Data Pipeline
@@ -20,10 +24,6 @@ Run `python preprocessing/run_panel_prep.py` to build both model inputs (see `pr
 Traditional statistics and machine learning are used to harness both explanatory and predictive power.
 - A structural econometric model allows for observing the impact of zoning changes. Model coefficients are statistically valid to help explain predictions
 - Cross validation of results is done using spatially stratified spatial splits to ensure all neighborhoods are accounted for in training and testing data
-
-###
-The simulator predict real estate prices for each Boston typology that could be built on a parcel. Those prices are used to predict the developer decisions. The residential typologies for the developer choice are:
-![](boston_typologies.png)
 
 ### Demand (Revenue Calculation)
 - A standard **OLS hedonic model** is used to predict the value of different residential development types on a particular parcel. That spatio-temporal lag variable in the model predicts **price per square foot** to feed into developer revenue calculations. It uses property attributes alongside others to address statistical needs:
